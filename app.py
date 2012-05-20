@@ -1,3 +1,4 @@
+import os
 import datetime
 import web
 from dumptruck import DumpTruck
@@ -21,7 +22,8 @@ class alarm:
     def GET(self):
         web.header('Content-Type', 'application/json')
         try:
-            last_alert = dt.execute('select datetime from alarms order by date desc limit 1')[0]['datetime']
+            dt = connect_db()
+            last_alert = dt.execute('select datetime from alarms order by datetime desc limit 1')[0]['datetime']
         except IndexError:
             return '{"status": "okay", "last_alert": null}'
         else:
@@ -30,13 +32,21 @@ class alarm:
     def POST(self):
         web.header('Content-Type', 'application/json')
         now = datetime.datetime.now()
+        dt = connect_db()
         dt.insert({'datetime': now}, 'alarms')
+        os.system('killall mplayer && mplayer ~/Music/DragonForce/*/*')
         return json.dumps({'status': 'okay', 'current_alert': now})
 
-if __name__ == "__main__":
-    dt = DumpTruck(dbname = 'snooze.sqlite')
+def connect_db():
+    return DumpTruck(dbname = 'snooze.sqlite')
+
+def create_db():
+    dt = connect_db()
     dt.create_table({'datetime': datetime.datetime.now()}, 'alarms', if_not_exists = True)
     dt.create_index('alarms', ['datetime'], unique = True)
+
+if __name__ == "__main__":
+    create_db()
 
     app = web.application(urls, globals())
     app.run()
