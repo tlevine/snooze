@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import datetime
 import web
 from dumptruck import DumpTruck
@@ -36,7 +38,7 @@ class alarm:
         return json.dumps({'status': 'okay', 'current_alert': now})
 
 def connect_db():
-    return DumpTruck(dbname = 'snooze.sqlite')
+    return DumpTruck(dbname = '/srv/www/snooze/snooze.sqlite')
 
 def create_db():
     dt = connect_db()
