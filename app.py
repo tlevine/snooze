@@ -1,4 +1,3 @@
-import os
 import datetime
 import web
 from dumptruck import DumpTruck
@@ -34,7 +33,6 @@ class alarm:
         now = datetime.datetime.now()
         dt = connect_db()
         dt.insert({'datetime': now}, 'alarms')
-        os.system('killall mplayer && mplayer ~/Music/DragonForce/*/*')
         return json.dumps({'status': 'okay', 'current_alert': now})
 
 def connect_db():
@@ -45,8 +43,9 @@ def create_db():
     dt.create_table({'datetime': datetime.datetime.now()}, 'alarms', if_not_exists = True)
     dt.create_index('alarms', ['datetime'], unique = True)
 
+create_db()
+app = web.application(urls, globals())
 if __name__ == "__main__":
-    create_db()
-
-    app = web.application(urls, globals())
     app.run()
+else:
+    application = app.wsgifunc()
