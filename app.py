@@ -50,7 +50,7 @@ class alarm:
         web.header('Content-Type', 'application/json')
         now = datetime.datetime.now()
         dt.insert({'datetime': now}, 'alarms')
-        return json.dumps({'status': 'okay', 'current_alert': now})
+        return json.dumps({'status': 'okay', 'current_alert': now.isoformat()})
 
 
 def create_db():
