@@ -61,7 +61,7 @@ class alarm:
             })
 
         now = datetime.datetime.now()
-        dt.insert({'datetime': now}, 'alarms')
+        dt.insert({'datetime': now, 'music': music}, 'alarms')
         return json.dumps({
             'status': 'okay',
             'current_alert': now.strftime(timeformat),
