@@ -20,11 +20,15 @@ while True:
     status = json.loads(urlopen('http://alarm.thomaslevine.com/alarm').read())
     last_alert = loadtime(status['last_alert']) + datetime.timedelta(seconds = framerate)
     current_time = loadtime(status['current_time'])
+
+    music = status['music']
+
     if status['status'] != 'okay':
         raise Exception('status')
+    elif music not in music_choices:
+        raise ValueError('The music choice "%s" is not among the options.' % music)
     elif last_alert > current_time:
-        print('<blinking lights>')
-        os.system('mplayer ~/Music/DragonForce/*/* &>/dev/null &')
+        os.system('mplayer ~/Music/%s/*/* &>/dev/null &' % music)
         raw_input('You are being summoned! Press any key to stop the music')
         os.system('killall mplayer')
     else:
