@@ -60,13 +60,16 @@ def create_db():
     dt.create_index('alarms', ['datetime'], unique = True)
 
 
-if __name__=='__main__':
-    # Let's ignore making this work locally
-    #app = web.application(urls, globals())
-    #dt = DumpTruck(dbname = 'snooze.sqlite')
-    #app.run()
+# Let's ignore making this work locally
+#app = web.application(urls, globals())
+#dt = DumpTruck(dbname = 'snooze.sqlite')
+#app.run()
 
-    # Server
+# Server
+try:
     dt = DumpTruck(dbname = '/srv/www/snooze/snooze.sqlite')
+except:
+    pass
+else:
     app = web.application(urls, globals())
     application = app.wsgifunc()
