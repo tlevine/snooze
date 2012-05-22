@@ -36,7 +36,6 @@ class alarm:
     def GET(self):
         web.header('Content-Type', 'application/json')
         try:
-            dt = connect_db()
             last_alert = dt.execute('select datetime from alarms order by datetime desc limit 1')[0]['datetime']
         except IndexError:
             return '{"status": "okay", "last_alert": null}'
@@ -50,7 +49,6 @@ class alarm:
     def POST(self):
         web.header('Content-Type', 'application/json')
         now = datetime.datetime.now()
-        dt = connect_db()
         dt.insert({'datetime': now}, 'alarms')
         return json.dumps({'status': 'okay', 'current_alert': now})
 
