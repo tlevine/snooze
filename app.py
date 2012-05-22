@@ -47,7 +47,7 @@ class alarm:
                 'status': 'okay',
                 'last_alert': alarm_request['datetime'].strftime(timeformat),
                 'current_time': datetime.datetime.now().strftime(timeformat),
-                'music_requsted': alarm_request['music'],
+                'music': alarm_request['music'],
             })
 
     def POST(self):
@@ -73,7 +73,7 @@ def create_db():
     dt = connect_db()
     dt.create_table({
         'datetime': datetime.datetime.now(),
-        'music_requested': 'DragonForce'
+        'music': 'DragonForce'
     }, 'alarms', if_not_exists = True)
     dt.create_index('alarms', ['datetime'], unique = True)
 
