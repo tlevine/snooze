@@ -54,19 +54,16 @@ class alarm:
         dt.insert({'datetime': now}, 'alarms')
         return json.dumps({'status': 'okay', 'current_alert': now})
 
-def connect_db():
-    import os
-    dbname = os.path.join(os.getcwd(), 'snooze.sqlite')
-    return DumpTruck(dbname = dbname)
 
 def create_db():
     dt = connect_db()
     dt.create_table({'datetime': datetime.datetime.now()}, 'alarms', if_not_exists = True)
     dt.create_index('alarms', ['datetime'], unique = True)
 
-create_db()
 app = web.application(urls, globals())
 if __name__ == "__main__":
+    dt = DumpTruck(dbname = 'snooze.sqlite')
     app.run()
 else:
+    dt = DumpTruck(dbname = '/srv/www/snooze/snooze.sqlite')
     application = app.wsgifunc()
