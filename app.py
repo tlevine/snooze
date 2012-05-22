@@ -55,7 +55,9 @@ class alarm:
         return json.dumps({'status': 'okay', 'current_alert': now})
 
 def connect_db():
-    return DumpTruck(dbname = 'snooze.sqlite')
+    import os
+    dbname = os.path.join(os.getcwd(), 'snooze.sqlite')
+    return DumpTruck(dbname = dbname)
 
 def create_db():
     dt = connect_db()
