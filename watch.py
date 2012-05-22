@@ -7,7 +7,7 @@ import json
 import datetime
 import os
 
-from timeformat import timeformat
+from app import timeformat
 framerate = 60
 
 def loadtime(text):

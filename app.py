@@ -11,6 +11,7 @@ urls = (
     '/', 'index',
     '/alarm', 'alarm'
 )
+timeformat = '%A, %B %d, %Y at %H:%M'
 
 class index:
     def GET(self):
@@ -61,13 +62,13 @@ def create_db():
     dt.create_index('alarms', ['datetime'], unique = True)
 
 
+if __name__=='__main__':
+    # Let's ignore making this work locally
+    #app = web.application(urls, globals())
+    #dt = DumpTruck(dbname = 'snooze.sqlite')
+    #app.run()
 
-# Let's ignore making this work locally
-#app = web.application(urls, globals())
-#dt = DumpTruck(dbname = 'snooze.sqlite')
-#app.run()
-
-# Server
-dt = DumpTruck(dbname = '/srv/www/snooze/snooze.sqlite')
-app = web.application(urls, globals())
-application = app.wsgifunc()
+    # Server
+    dt = DumpTruck(dbname = '/srv/www/snooze/snooze.sqlite')
+    app = web.application(urls, globals())
+    application = app.wsgifunc()
