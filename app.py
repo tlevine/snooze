@@ -56,7 +56,7 @@ class alarm:
 
         if music not in music_choices:
             return json.dumps({
-               'status': "Music must be one of the choices listed in the 'music_choices' field"
+               'status': "Music must be one of the choices listed in the 'music_choices' field",
                'music_choices': music_choices,
             })
 
