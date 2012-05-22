@@ -78,16 +78,14 @@ def create_db():
     dt.create_index('alarms', ['datetime'], unique = True)
 
 
-# Let's ignore making this work locally
-#app = web.application(urls, globals())
-#dt = DumpTruck(dbname = 'snooze.sqlite')
-#app.run()
 
-# Server and a hack for 
+# Server and a hack for database location and timeformat passing
 try:
     dt = DumpTruck(dbname = '/srv/www/snooze/snooze.sqlite')
 except:
-    pass
+    app = web.application(urls, globals())
+    dt = DumpTruck(dbname = 'snooze.sqlite')
+    app = web.application(urls, globals())
 else:
     app = web.application(urls, globals())
     application = app.wsgifunc()
