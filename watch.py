@@ -29,4 +29,5 @@ while True:
         os.system('killall mplayer')
     else:
         print('No alarm')
-        sleep(framerate)
+
+    sleep(framerate)
