@@ -17,7 +17,7 @@ def loadtime(text):
 while True:
     print chr(27) + "[2J" #Clear terminal
     print datetime.datetime.now().strftime(timeformat)
-    status = json.loads(urlopen('http://alarm.thomaslevine.com/alarm').read())
+    status = json.loads(urlopen('http://alarm.thomaslevine.com/page').read())
     last_alert = loadtime(status['last_alert']) + datetime.timedelta(seconds = framerate)
     current_time = loadtime(status['current_time'])
 
