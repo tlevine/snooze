@@ -9,7 +9,7 @@ urls = (
     '/', 'index',
     '/alarm', 'alarm'
 )
-timeformat = '%A, %B %d, %Y at %H:%M'
+timeformat = '%A, %B %d, %Y at %H:%M:%S'
 
 class index:
     def GET(self):
@@ -65,7 +65,7 @@ def create_db():
 #dt = DumpTruck(dbname = 'snooze.sqlite')
 #app.run()
 
-# Server
+# Server and a hack for 
 try:
     dt = DumpTruck(dbname = '/srv/www/snooze/snooze.sqlite')
 except:

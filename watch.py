@@ -6,12 +6,13 @@ from urllib2 import urlopen
 import json
 import datetime
 import os
+from time import sleep
 
 from app import timeformat
-framerate = 60
+framerate = 10
 
 def loadtime(text):
-    return datetime.datetime.strftime(text, timeformat)
+    return datetime.datetime.strptime(text, timeformat)
 
 while True:
     status = json.loads(urlopen('http://alarm.thomaslevine.com/alarm').read())
