@@ -1,4 +1,8 @@
 #!/usr/bin/env python2
+"""
+I've wanted to make this for years. My bed is next to my computer,
+and I leave my speakers on, so you can wake me up any time.
+"""
 
 import datetime
 import web
@@ -7,7 +11,7 @@ import json
 
 urls = (
     '/', 'index',
-    '/alarm', 'alarm'
+    '/page', 'page'
 )
 timeformat = '%A, %B %d, %Y at %H:%M:%S'
 music_choices = ['DragonForce', 'Skream']
@@ -16,38 +20,33 @@ class index:
     def GET(self):
         return '''
 <style>form, input { display: inline; }</style>
-<h1>Wake Tom up.</h1>
-<p>
-  I've wanted to make this for years. My bed is next to my computer,
-  and I leave my speakers on, so you can wake me up any time.
-</p>
-<h2>Directions</h2>
+<h1>Page Tom.</h1>
 <ul>
   <li>
-    <form action="/alarm" method="get"><input type="submit" value="GET"></form>
-    to /alarm to see when the last alarm was started.
+    <form action="/page" method="post"><input type="submit" value="POST"></form>
+     to /page to play loud music from Tom's speakers.
   </li>
   <li>
-    <form action="/alarm" method="post"><input type="submit" value="POST"></form>
-     to /alarm to play loud music from Tom's speakers.
+    <form action="/page" method="get"><input type="submit" value="GET"></form>
+    to /page to see when the last page was started.
   </li>
 </ul>
 '''
 
-class alarm:
+class page:
     def GET(self):
         web.header('Content-Type', 'application/json')
-        alarm_request = dt.execute('select music, datetime from alarms order by datetime desc limit 1')[0]
+        page_request = dt.execute('select music, datetime from pages order by datetime desc limit 1')[0]
         try:
-            alarm_request['datetime']
+            page_request['datetime']
         except IndexError:
             return '{"status": "okay", "last_alert": null}'
         else:
             return json.dumps({
                 'status': 'okay',
-                'last_alert': alarm_request['datetime'].strftime(timeformat),
+                'last_alert': page_request['datetime'].strftime(timeformat),
                 'current_time': datetime.datetime.now().strftime(timeformat),
-                'music': alarm_request['music'],
+                'music': page_request['music'],
             })
 
     def POST(self):
@@ -61,7 +60,7 @@ class alarm:
             })
 
         now = datetime.datetime.now()
-        dt.insert({'datetime': now, 'music': music}, 'alarms')
+        dt.insert({'datetime': now, 'music': music}, 'pages')
         return json.dumps({
             'status': 'okay',
             'current_alert': now.strftime(timeformat),
@@ -74,8 +73,8 @@ def create_db():
     dt.create_table({
         'datetime': datetime.datetime.now(),
         'music': 'DragonForce'
-    }, 'alarms', if_not_exists = True)
-    dt.create_index('alarms', ['datetime'], unique = True)
+    }, 'pages', if_not_exists = True)
+    dt.create_index('pages', ['datetime'], unique = True)
 
 
 
