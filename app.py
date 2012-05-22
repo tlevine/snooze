@@ -5,8 +5,6 @@ import web
 from dumptruck import DumpTruck
 import json
 
-from timeformat import timeformat
-
 urls = (
     '/', 'index',
     '/alarm', 'alarm'
