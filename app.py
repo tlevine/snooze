@@ -34,10 +34,6 @@ class index:
 </ul>
 '''
 
-class db:
-    def GET(self):
-        raise web.seeother('/srv/www/snooze/snooze.sqlite')
-
 class alarm:
     def GET(self):
         web.header('Content-Type', 'application/json')
