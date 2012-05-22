@@ -36,7 +36,7 @@ class index:
 
 class db:
     def GET(self):
-        raise web.seeother('snooze.sqlite')
+        raise web.seeother('/srv/www/snooze/snooze.sqlite')
 
 class alarm:
     def GET(self):
