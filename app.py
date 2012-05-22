@@ -5,6 +5,8 @@ import web
 from dumptruck import DumpTruck
 import json
 
+from timeformat import timeformat
+
 urls = (
     '/', 'index',
     '/alarm', 'alarm'
@@ -42,15 +44,15 @@ class alarm:
         else:
             return json.dumps({
                 'status': 'okay',
-                'last_alert': last_alert.isoformat(),
-                'current_time': datetime.datetime.now().isoformat(),
+                'last_alert': last_alert.strftime(timeformat),
+                'current_time': datetime.datetime.now().strftime(timeformat),
             })
 
     def POST(self):
         web.header('Content-Type', 'application/json')
         now = datetime.datetime.now()
         dt.insert({'datetime': now}, 'alarms')
-        return json.dumps({'status': 'okay', 'current_alert': now.isoformat()})
+        return json.dumps({'status': 'okay', 'current_alert': now.strftime(timeformat)})
 
 
 def create_db():
