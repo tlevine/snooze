@@ -10,6 +10,7 @@ urls = (
     '/alarm', 'alarm'
 )
 timeformat = '%A, %B %d, %Y at %H:%M:%S'
+music_choices = ['DragonForce', 'Skream']
 
 class index:
     def GET(self):
@@ -36,27 +37,44 @@ class index:
 class alarm:
     def GET(self):
         web.header('Content-Type', 'application/json')
+        alarm_request = dt.execute('select music, datetime from alarms order by datetime desc limit 1')[0]
         try:
-            last_alert = dt.execute('select datetime from alarms order by datetime desc limit 1')[0]['datetime']
+            alarm_request['datetime']
         except IndexError:
             return '{"status": "okay", "last_alert": null}'
         else:
             return json.dumps({
                 'status': 'okay',
-                'last_alert': last_alert.strftime(timeformat),
+                'last_alert': alarm_request['datetime'].strftime(timeformat),
                 'current_time': datetime.datetime.now().strftime(timeformat),
+                'music_requsted': alarm_request['music'],
             })
 
     def POST(self):
         web.header('Content-Type', 'application/json')
+        music = web.input().get('music', 'DragonForce')
+
+        if music not in music_choices:
+            return json.dumps({
+               'status': "Music must be one of the choices listed in the 'music_choices' field"
+               'music_choices': music_choices,
+            })
+
         now = datetime.datetime.now()
         dt.insert({'datetime': now}, 'alarms')
-        return json.dumps({'status': 'okay', 'current_alert': now.strftime(timeformat)})
+        return json.dumps({
+            'status': 'okay',
+            'current_alert': now.strftime(timeformat),
+            'music': music
+        })
 
 
 def create_db():
     dt = connect_db()
-    dt.create_table({'datetime': datetime.datetime.now()}, 'alarms', if_not_exists = True)
+    dt.create_table({
+        'datetime': datetime.datetime.now(),
+        'music_requested': 'DragonForce'
+    }, 'alarms', if_not_exists = True)
     dt.create_index('alarms', ['datetime'], unique = True)
 
 

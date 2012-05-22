@@ -8,7 +8,7 @@ import datetime
 import os
 from time import sleep
 
-from app import timeformat
+from app import timeformat, music_choices
 framerate = 10
 
 def loadtime(text):
@@ -21,6 +21,8 @@ while True:
     if status['status'] != 'okay':
         raise Exception('status')
     elif last_alert > current_time:
-        os.system('mplayer ~/Music/Dragonforce/*/*')
+        print('<blinking lights>')
+        os.system('mplayer ~/Music/DragonForce/*/*')
     else:
+        print('No alarm')
         sleep(framerate)
